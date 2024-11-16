@@ -54,15 +54,16 @@ jobs:
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
+        sudo mkdir -p /mnt/workdir
+        sudo chown $USER:$GROUPS /mnt/workdir
 
     - name: Clone source code
-      working-directory: /workdir
+      working-directory: /mnt/workdir
       run: |
         df -hT $PWD
+        df -h
         git clone $REPO_URL -b $REPO_BRANCH $WORK_DIR
-        ln -sf /workdir/$WORK_DIR $GITHUB_WORKSPACE/$WORK_DIR
+        ln -sf /mnt/workdir/$WORK_DIR $GITHUB_WORKSPACE/$WORK_DIR
 
     - name: Load custom feeds
       run: |
