@@ -1,7 +1,7 @@
 ## x86固件
 [![Build X86 OpenWrt](https://github.com/taanng/x86_Openwrt/actions/workflows/build-immortalwrt-x86-openwrt.yml/badge.svg)](https://github.com/taanng/x86_Openwrt/actions/workflows/build-immortalwrt-x86-openwrt.yml)
 
-基于Lean大神原版openwrt，固件每日同步最新代码
+基于immortalwrt大神原版openwrt，固件每日同步最新代码
 
 登陆IP：192.168.1.1 
 
