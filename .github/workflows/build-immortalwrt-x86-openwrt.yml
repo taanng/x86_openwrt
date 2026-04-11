@@ -48,10 +48,10 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo -E apt-get -qq update
+        sudo -E apt -qq update
         sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
-        sudo -E apt-get -qq autoremove --purge
-        sudo -E apt-get -qq clean
+        sudo -E apt -qq autoremove --purge
+        sudo -E apt -qq clean
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /mnt/workdir
         sudo chown $USER:$GROUPS /mnt/workdir
@@ -137,7 +137,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@v2.5.0
+      uses: softprops/action-gh-release@v3
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -155,10 +155,8 @@ jobs:
           repository: ${{ github.repository }}
 
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.3.4
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        keep_latest: 6
-        delete_tags: true
+      run: |
+        gh release list --limit 100 | awk 'NR > 6 {print $1}' | xargs -r -n 1 gh release delete -y --cleanup-tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
